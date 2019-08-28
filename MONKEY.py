@@ -38,7 +38,7 @@ MOcomplex = {AlGaAs:'AlGaAs, 0.970-2.2 um, complex material', InGaAs: 'InGaAs, 0
 GaAsP: 'GaAsP, 0.970-2.2 um, complex material', AlInGaAs: 'AlInGaAs, 0.900-2.100 um,  x: 0.3-1.0, complex material'}
 
 # MOcomplexk is the dictionary for n+k result, 2 inputs (component ratio, wavelength) 
-MOcomplexk = {AlGaAs_interp: 'AlGaAs_interp, 0.206 - 2.066 um, complex material'}
+MOcomplexk = {AlGaAs_interp: 'AlGaAs_interp, 0.206-2.066 um, complex material'}
 
 
 class MOGUI(Frame):
