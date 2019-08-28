@@ -181,7 +181,7 @@ class MOGUI(Frame):
                 yr = [key(i).real for i in xr]
                 #yi = [key(i).imag for i in xr]
                 ax1.plot(xr, yr, '-g', label='n value')
-                #ax1.plot(xr, yi, '-', label='i value')
+                #ax1.plot(xr, yi, '-', label='k value')
                 ax1.set_xlabel('wavelength (um)')
                 ax1.set_ylabel('n & k value')
                 ax1.legend(loc='upper right')
@@ -202,7 +202,7 @@ class MOGUI(Frame):
                 yr = [key(i, True).real for i in xr]
                 yi = [key(i, True).imag for i in xr]
                 ax1.plot(xr, yr, '-g', label='n value')
-                ax1.plot(xr, yi, '-', label='i value')
+                ax1.plot(xr, yi, '-', label='k value')
                 ax1.set_xlabel('wavelength (um)')
                 ax1.set_ylabel('n & k value')
                 ax1.legend(loc='upper right')
@@ -223,7 +223,7 @@ class MOGUI(Frame):
                 yr = [key(float(self.XPE.get().strip()),i).real for i in xr]
                 yi = [key(float(self.XPE.get().strip()),i).imag for i in xr]
                 ax1.plot(xr, yr, '-g', label='n value')
-                ax1.plot(xr, yi, '-', label='i value')
+                ax1.plot(xr, yi, '-', label='k value')
                 ax1.set_xlabel('wavelength (um)')
                 ax1.set_ylabel('n & k value')
                 ax1.legend(loc='upper right')
@@ -244,7 +244,7 @@ class MOGUI(Frame):
                 yr = [key(float(self.XPE.get().strip()),i,True).real for i in xr]
                 yi = [key(float(self.XPE.get().strip()),i,True).imag for i in xr]
                 ax1.plot(xr, yr, '-g', label='n value')
-                ax1.plot(xr, yi, '-', label='i value')
+                ax1.plot(xr, yi, '-', label='k value')
                 ax1.set_xlabel('wavelength (um)')
                 ax1.set_ylabel('n & k value')
                 ax1.legend(loc='upper right')
