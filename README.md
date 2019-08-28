@@ -1,2 +1,9 @@
 # LEES
 Laser Endpoint Etch Simulator
+
+
+Requires EMpy, tkinter, numpy, pylab
+
+
+
+Used code from Demis D. John and Dustin Kleckner: nk database file.
