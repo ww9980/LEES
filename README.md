@@ -4,7 +4,7 @@ Requires EMpy, tkinter, numpy, pylab
 
 A GUI based laser endpoint signal simulator using ElectromagneticPy module. 
 
-![LEES screenshot](.\LEESscreen.JPG)
+![LEES screenshot](LEESscreen.JPG)
 
 
 
@@ -14,4 +14,4 @@ A simple program to plot n & k values of a material. Export the material definit
 
 Used code from Demis D. John and Dustin Kleckner: nk database file.
 
-![Monkey creenshot](.\MonkeyScreen.JPG)
+![Monkey creenshot](MonkeyScreen.JPG)
