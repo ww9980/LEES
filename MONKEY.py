@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from tkinter import *
  
 from MONK import *
@@ -40,6 +41,7 @@ GaAsP: 'GaAsP, 0.970-2.2 um, complex material', AlInGaAs: 'AlInGaAs, 0.900-2.100
 # MOcomplexk is the dictionary for n+k result, 2 inputs (component ratio, wavelength) 
 MOcomplexk = {AlGaAs_interp: 'AlGaAs_interp, 0.206-2.066 um, complex material'}
 
+datapoints = 501
 
 class MOGUI(Frame):
  
@@ -58,24 +60,26 @@ class MOGUI(Frame):
         self.entry = Entry(self, textvariable=self.search_var, width=20)
         self.lbox = Listbox(self, width=45, height=15)
          
-        self.entry.grid(row=0, column=0, padx=10, pady=3,columnspan=2)
-        self.lbox.grid(row=1, column=0, padx=10, pady=3,columnspan=2)
+        self.entry.grid(row=0, column=0, padx=10, pady=3,columnspan=3)
+        self.lbox.grid(row=1, column=0, padx=10, pady=3,columnspan=3)
         
         
         self.WLE = Entry(self)
-        self.WLE.grid(row=2, column=0)
+        self.WLE.grid(row=2, column=1)
         self.WLE.insert(0,'0.670')
-        self.WLEunit = Label(self, text = 'μm')
-        self.WLEunit.grid(row=2, column=1)
+        self.WLEunit = Label(self, text = 'µm')
+        self.WLEunit.grid(row=2, column=2)
         self.XPE = Entry(self)
-        self.XPE.grid(row=3, column=0)
+        self.XPE.grid(row=3, column=1)
         self.XPE.insert(0,'0.3')
         self.XPEunit = Label(self, text = 'x')
-        self.XPEunit.grid(row=3, column=1)
+        self.XPEunit.grid(row=3, column=2)
         self.ShowBtn = Button(self, text='   Show   ', command=self.ShowNK)
         self.ShowBtn.grid(row=4, column=0, padx=10, pady=3)
         self.PlotBtn = Button(self, text='   Plot   ', command=self.PlotNK)
         self.PlotBtn.grid(row=4, column=1, padx=10, pady=3)
+        self.TohoBtn = Button(self, text='Export to Toho', command=self.TohoNK)
+        self.TohoBtn.grid(row=4, column=2, padx=10, pady=3)
         # Function for updating the list/doing the search.
         # It needs to be called here to populate the listbox.
         self.MatDetail = Label(self, text = '')
@@ -111,7 +115,7 @@ class MOGUI(Frame):
             if text == Mat[0]:
                 self.MatDetail.configure(text=val)
                 self.MatNK.configure(text=key)
-        
+                return
         for key, val in MOw.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -120,6 +124,7 @@ class MOGUI(Frame):
                     self.MatNK.configure(text=key(float(self.WLE.get().strip())))
                 except:
                     messagebox.showerror('Error', 'The specified wavelength is out of the available data range. The result might be invalid. , ', detail='', type=OK)
+                return
         for key, val in MOwk.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -128,6 +133,7 @@ class MOGUI(Frame):
                     self.MatNK.configure(text=key(float(self.WLE.get().strip()), True))
                 except:
                     messagebox.showerror('Error', 'The specified wavelength is out of the available data range. The result might be invalid. , ', detail='', type=OK)
+                return
         for key, val in MOcomplex.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -138,6 +144,7 @@ class MOGUI(Frame):
                     w = filter(lambda i: issubclass(i.category, UserWarning), w)
                     if len(list(w)):
                         messagebox.showerror('Error', 'The specified wavelength or component ratio is out of the available data range. The result might be invalid. , ', detail='', type=OK)
+                return
         for key, val in MOcomplexk.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -146,6 +153,7 @@ class MOGUI(Frame):
                     self.MatNK.configure(text=key(float(self.XPE.get().strip()),float(self.WLE.get().strip()), True))
                 except:
                     messagebox.showerror('Error', 'The specified wavelength or component ratio is out of the available data range. The result might be invalid. , ', detail='', type=OK)
+                return
 
     def PlotNK(self):
         sel = self.lbox.curselection()
@@ -166,7 +174,7 @@ class MOGUI(Frame):
                 ax1.grid(True)
                 fig1.show()
                 pylab.show()
-                
+                return
         for key, val in MOw.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -188,6 +196,7 @@ class MOGUI(Frame):
                 ax1.grid(True)
                 fig1.show()
                 pylab.show()
+                return
         for key, val in MOwk.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -209,6 +218,7 @@ class MOGUI(Frame):
                 ax1.grid(True)
                 fig1.show()
                 pylab.show()
+                return
         for key, val in MOcomplex.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -221,15 +231,16 @@ class MOGUI(Frame):
                 ax1.set_title(r'%s' % (Mat[0]))
                 xr = numpy.linspace(min,max,50)
                 yr = [key(float(self.XPE.get().strip()),i).real for i in xr]
-                yi = [key(float(self.XPE.get().strip()),i).imag for i in xr]
+                #yi = [key(float(self.XPE.get().strip()),i).imag for i in xr]
                 ax1.plot(xr, yr, '-g', label='n value')
-                ax1.plot(xr, yi, '-', label='k value')
+                #ax1.plot(xr, yi, '-', label='k value')
                 ax1.set_xlabel('wavelength (um)')
                 ax1.set_ylabel('n & k value')
                 ax1.legend(loc='upper right')
                 ax1.grid(True)
                 fig1.show()
                 pylab.show()
+                return
         for key, val in MOcomplexk.items():
             Mat = val.split(',')
             if text == Mat[0]:
@@ -251,7 +262,103 @@ class MOGUI(Frame):
                 ax1.grid(True)
                 fig1.show()
                 pylab.show()
+                return
 
+    def TohoNK(self):
+        global datapoints
+        sel = self.lbox.curselection()
+        if len(sel) != 1:
+            return
+        idx = int(sel[0])
+        text=self.lbox.get(idx)
+        f = open(text + '.mat',"w+")
+        for key, val in MOconst.items():
+            Mat = val.split(',')
+            if text == Mat[0]:
+                self.MatDetail.configure(text=val)
+                self.MatNK.configure(text=key)
+                f.write(text + '\nnm\nNK')
+                xr = numpy.linspace(0,2,datapoints)
+                for i in xr:
+                    f.write('\n%.2f\t%.6f\t0' %(i*1000,key))
+                f.close()
+                messagebox.showinfo("Export to Toho", "\
+                Toho material definition file exported! \n\
+                Find it in the same folder where this program is. \n\
+                %d datapoints used. " % datapoints)
+                return
+        for key, val in MOw.items():
+            Mat = val.split(',')
+            if text == Mat[0]:
+                self.MatDetail.configure(text=val)
+                self.MatNK.configure(text=key(float(self.WLE.get().strip())))
+                minmax = Mat[1].split(' ')[1]
+                min = float(minmax.split('-')[0].strip())
+                max = float(minmax.split('-')[1].strip())
+                f.write(text + '\nnm\nNK')
+                xr = numpy.linspace(min,max,datapoints)
+                for i in xr:
+                    f.write('\n%.2f\t%.6f\t0' %(i*1000,key(i).real))
+                f.close()
+                messagebox.showinfo("Export to Toho", "\
+                Toho material definition file exported! \n\
+                Find it in the same folder where this program is. \n\
+                %d datapoints used. " % datapoints)
+                return
+        for key, val in MOwk.items():
+            Mat = val.split(',')
+            if text == Mat[0]:
+                self.MatDetail.configure(text=val)
+                self.MatNK.configure(text=key(float(self.WLE.get().strip()),True))
+                minmax = Mat[1].split(' ')[1]
+                f.write(text + '\nnm\nNK')
+                min = float(minmax.split('-')[0].strip())
+                max = float(minmax.split('-')[1].strip())
+                xr = numpy.linspace(min,max,datapoints)
+                for i in xr:
+                    f.write('\n%.2f\t%.6f\t%.10f' %(i*1000,key(i, True).real,key(i, True).imag))
+                f.close()
+                messagebox.showinfo("Export to Toho", "\
+                Toho material definition file exported! \n\
+                Find it in the same folder where this program is. \n\
+                %d datapoints used. " % datapoints)
+                return
+        for key, val in MOcomplex.items():
+            Mat = val.split(',')
+            if text == Mat[0]:
+                self.MatDetail.configure(text=val)
+                self.MatNK.configure(text=key(float(self.XPE.get().strip()),float(self.WLE.get().strip())))
+                f.write(text + '\nnm\nNK')
+                minmax = Mat[1].split(' ')[1]
+                min = float(minmax.split('-')[0].strip())
+                max = float(minmax.split('-')[1].strip())
+                xr = numpy.linspace(min,max,datapoints)
+                for i in xr:
+                    f.write('\n%.2f\t%.6f\t%.10f' %(i*1000,key(float(self.XPE.get().strip()),i).real,key(float(self.XPE.get().strip()),i).imag))
+                f.close()
+                messagebox.showinfo("Export to Toho", "\
+                Toho material definition file exported! \n\
+                Find it in the same folder where this program is. \n\
+                %d datapoints used. " % datapoints)
+                return
+        for key, val in MOcomplexk.items():
+            Mat = val.split(',')
+            if text == Mat[0]:
+                self.MatDetail.configure(text=val)
+                self.MatNK.configure(text=key(float(self.XPE.get().strip()),float(self.WLE.get().strip()), True))
+                f.write(text + '\nnm\nNK')
+                minmax = Mat[1].split(' ')[1]
+                min = float(minmax.split('-')[0].strip())
+                max = float(minmax.split('-')[1].strip())
+                xr = numpy.linspace(min,max,datapoints)
+                for i in xr:
+                    f.write('\n%.2f\t%.6f\t%.10f' %(i*1000,key(float(self.XPE.get().strip()),i,True).real,key(float(self.XPE.get().strip()),i,True).imag))
+                f.close()
+                messagebox.showinfo("Export to Toho", "\
+                Toho material definition file exported! \n\
+                Find it in the same folder where this program is. \n\
+                %d datapoints used. " % datapoints)
+                return
 
 
 
